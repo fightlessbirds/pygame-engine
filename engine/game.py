@@ -2,9 +2,6 @@ import os
 import pygame
 
 
-#TODO: Scenes will be organized by their name instead of a numeric index.
-#TODO: When a scene is finished, it is destroyed. A new instance is created when the scene starts again.
-
 class Game():
     """
     Attributes:
@@ -128,6 +125,7 @@ class Game():
         return self.screen_rect.height
     
     def load_image(self, file_name):
+        #TODO: fix transparency for converted images
         file_path = os.path.join(file_name)
         image = pygame.image.load(file_path)
         conv_image = image.convert()
