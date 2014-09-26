@@ -51,10 +51,10 @@ class Game():
         #add the scene to the dictionary of scene
         self.scenes[name] = scene
         #if no scenes have been added then make this the next scene
-        if (self.next_scene == None):
+        if (self.next_scene is None):
             self.next_scene = name
-        print("Scene " + name + " has been added to the game")
-    
+        print("Scene {} has been added to the game".format(name))
+
     def load_scene(self, name):
         """Returns an instance of the specified scene."""
         #get scene from scene dictionary
@@ -69,10 +69,10 @@ class Game():
         """Set the next scene.
         name - The name for the scene class which has been added to the game."""
         scene_class = self.scenes[name]
-        if (scene_class == None):
-            raise Exception("Could not find scene: " + name)
+        if (scene_class is None):
+            raise Exception("Could not find scene: {}".format(name))
         self.next_scene = name
-        print("Set next scene to " + name)
+        print("Set next scene to {}".format(name))
 
     def start(self):
         """Starts the game. Control is not passed back to the calling module
@@ -83,13 +83,13 @@ class Game():
             raise Exception("cannot start game, there are no scenes")
         else:
             #the first scene to be added will be executed by default.
-            while (self.finished == False):
+            while (self.finished is False):
                     self.current_scene = self.load_scene(self.next_scene)
-                    print("Initializing scene: " + self.current_scene.get_name())
+                    print("Initializing scene: {}".format(self.current_scene.get_name()))
                     self.current_scene.on_init()
                     print("Beginning game loop")
                     clock = pygame.time.Clock() #create a new clock
-                    while (self.current_scene.finished == False):   #main game loop
+                    while (self.current_scene.finished is False):   #main game loop
                         #check if the application should be closed
                         quit_event = pygame.event.get(pygame.QUIT)
                         if (quit_event):
@@ -123,7 +123,7 @@ class Game():
 
     def get_height(self):
         return self.screen_rect.height
-    
+
     def load_image(self, file_name):
         #TODO: fix transparency for converted images
         file_path = os.path.join(file_name)
