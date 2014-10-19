@@ -125,10 +125,11 @@ class Game():
         return self.screen_rect.height
 
     def load_image(self, file_name):
-        #TODO: fix transparency for converted images
+        """Load an image. Magenta is used as a color key."""
         file_path = os.path.join(file_name)
         image = pygame.image.load(file_path)
         conv_image = image.convert()
+        conv_image.set_colorkey(pygame.Color(255, 0, 255))
         return conv_image
 
 
