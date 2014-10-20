@@ -4,8 +4,9 @@ from engine.game import Scene
 
 
 class TestScene1(Scene):
+    name = "test1"
+    
     def on_init(self):
-        print("Now initializing test1")
         self.test_image = draw_test_image(1)
         self.smile_image = self.parent.load_image("test_resources/smile.bmp")
     
@@ -33,8 +34,9 @@ class TestScene1(Scene):
 
 
 class TestScene2(Scene):
+    name = "test2"
+    
     def on_init(self):
-        print("Now initializing test2")
         self.test_image = draw_test_image(2)
         self.smile_image = self.parent.load_image("test_resources/smile.bmp")
     
@@ -70,6 +72,6 @@ def draw_test_image(number):
 if __name__ == "__main__":
     game = Game(640, 480)
     pygame.display.set_caption("Game Test")
-    game.add_scene(TestScene1, "test1")
-    game.add_scene(TestScene2, "test2")
+    game.add_scene(TestScene1)
+    game.add_scene(TestScene2)
     game.start()

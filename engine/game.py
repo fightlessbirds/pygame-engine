@@ -1,3 +1,21 @@
+"""
+Copyright (C) 2014  Jason Gosen
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
+
+
 import os
 import pygame
 
@@ -15,15 +33,17 @@ class Game():
         finished
     """
 
-    def __init__(self, width, height, fullscreen=False, frame_rate=30, title="PyGame Window", icon=None):
+    def __init__(self, width, height, fullscreen=False, frame_rate=30,
+                 title="PyGame Window", icon=None):
         """Initialize the game module. Creates a display window with the
         specified parameters."""
         print("Initializing game")
         #initialize pygame and the game screen
         pygame.init()
         self.frame_rate = frame_rate
-        if (fullscreen == True):
-            self.screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
+        if fullscreen == True:
+            self.screen = pygame.display.set_mode((width, height),
+                                                  pygame.FULLSCREEN)
         else:
             self.screen = pygame.display.set_mode((width, height))
         #set the screen area rect
@@ -43,15 +63,16 @@ class Game():
         self.finished = False
         print("Game is ready for scenes")
 
-    def add_scene(self, scene, name):
+    def add_scene(self, scene):
         """Add a scene to the game. If no scene has been added prior then
         this scene will be set as the default startup scene.
         scene - A subclass of Scene with all functions implemented.
         name - The name of the scene."""
+        name = scene.name
         #add the scene to the dictionary of scene
         self.scenes[name] = scene
         #if no scenes have been added then make this the next scene
-        if (self.next_scene is None):
+        if self.next_scene is None:
             self.next_scene = name
         print("Scene {} has been added to the game".format(name))
 
@@ -69,7 +90,7 @@ class Game():
         """Set the next scene.
         name - The name for the scene class which has been added to the game."""
         scene_class = self.scenes[name]
-        if (scene_class is None):
+        if scene_class is None:
             raise Exception("Could not find scene: {}".format(name))
         self.next_scene = name
         print("Set next scene to {}".format(name))
@@ -79,20 +100,21 @@ class Game():
         until the game is finished. The game will not start if no scenes have
         been added. When the game ends PyGame will be shut down."""
         #will quit unless scenes are added
-        if (len(self.scenes) == 0):
+        if len(self.scenes) == 0:
             raise Exception("cannot start game, there are no scenes")
         else:
             #the first scene to be added will be executed by default.
-            while (self.finished is False):
+            while self.finished is False:
                     self.current_scene = self.load_scene(self.next_scene)
-                    print("Initializing scene: {}".format(self.current_scene.get_name()))
+                    current_scene_name = self.current_scene.name
+                    print("Initializing scene: {}".format(current_scene_name))
                     self.current_scene.on_init()
                     print("Beginning game loop")
                     clock = pygame.time.Clock() #create a new clock
-                    while (self.current_scene.finished is False):   #main game loop
+                    while self.current_scene.finished is False:   #main game loop
                         #check if the application should be closed
                         quit_event = pygame.event.get(pygame.QUIT)
-                        if (quit_event):
+                        if quit_event:
                             print("Window manager exit request")
                             self.current_scene.finished = True
                             self.finished = True
@@ -108,7 +130,7 @@ class Game():
                         self.current_scene.on_render(self.screen)
                         pygame.display.flip()
                     #do any necessary cleanup for the scene
-                    print("Scene is finished. Cleaning up and switching to next scene")
+                    print("Cleaning up {}".format(current_scene_name))
                     self.current_scene.on_cleanup()
         #shut down pygame
         pygame.quit()
@@ -136,15 +158,15 @@ class Game():
 class Scene:
     """A simple scene class with functions for init/cleanup and
     update/render loops. Simply override the functions, add an instance
-    of the subclass to a game object, and start the game."""
+    of the subclass to a game object, and start the game. Be sure to
+    override the Scene.name variable to hold the name that the scene
+    will be identified by."""
+    
+    name = "unnamed"
 
     def __init__(self, game):
         self.parent = game
         self.finished = False
-
-    def get_name(self):
-        """Must be implemented to return the name by which this scene will be known."""
-        raise NotImplementedError("Scene.get_name() is not implemented")
 
     def on_init(self):
         """Called before the game enters the update/render loop for
@@ -154,22 +176,17 @@ class Scene:
     def on_update(self, delta, events):
         """Called once every iteration of the main loop. Game logic lives here.
         Arguments:
-            game - The Game instance that this scene belongs to.
             delta - The amount of milliseconds that have passed since the
-            last update."""
+            last update.
+            events - List of PyGame events that occured since last update."""
         raise NotImplementedError("Scene.on_update() is not implemented")
 
     def on_render(self, screen):
         """Called once every iteration of the main loop. Draw to the screen here.
         Arguments:
-            game - The Game instance that this scene belongs to.
             screen - A pygame Surface instance that represents the screen."""
         raise NotImplementedError("Scene.on_render() is not implemented")
 
     def on_cleanup(self):
-        """Cleanup any resources used by this scene. The scene instance is kept
-        in memory, therefor any attributes that are not re-initialized in
-        onInit() are retained the next time the scene is run.
-        Arguments:
-            game - The Game instance that this scene belongs to."""
+        """Cleanup any resources used by this scene."""
         raise NotImplementedError("Scene.on_cleanup() is not implemented")
