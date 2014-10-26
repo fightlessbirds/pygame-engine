@@ -130,7 +130,7 @@ class Game():
                         self.current_scene.on_render(self.screen)
                         pygame.display.flip()
                     #do any necessary cleanup for the scene
-                    print("Cleaning up {}".format(current_scene_name))
+                    print("Cleaning up scene: {}".format(current_scene_name))
                     self.current_scene.on_cleanup()
         #shut down pygame
         pygame.quit()
