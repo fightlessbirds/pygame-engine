@@ -38,10 +38,10 @@ class Game():
         specified parameters."""
         print("Initializing game")
         #parse keyword arguments
-        fullscreen = kwargs["fullscreen"] or False
-        frame_rate = kwargs["frame_rate"] or 30
-        title = kwargs["title"] or "PyGame Window"
-        icon = kwargs["icon"] or None
+        fullscreen = kwargs.get("fullscreen", False)
+        frame_rate = kwargs.get("frame_rate", 30)
+        title = kwargs.get("title", "PyGame Window")
+        icon = kwargs.get("icon", None)
         #initialize pygame and the game screen
         pygame.init()
         self.frame_rate = frame_rate
