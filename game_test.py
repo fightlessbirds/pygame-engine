@@ -1,4 +1,5 @@
 import pygame
+import engine
 from engine.game import Game
 from engine.game import Scene
 
@@ -8,7 +9,7 @@ class TestScene1(Scene):
     
     def on_init(self):
         self.test_image = draw_test_image(1)
-        self.smile_image = self.parent.load_image("test_resources/smile.bmp")
+        self.smile_image = engine.loader.load_image("test_resources/smile.bmp")
     
     def get_name(self):
         return "test1"
@@ -38,7 +39,7 @@ class TestScene2(Scene):
     
     def on_init(self):
         self.test_image = draw_test_image(2)
-        self.smile_image = self.parent.load_image("test_resources/smile.bmp")
+        self.smile_image = engine.loader.load_image("test_resources/smile.bmp")
     
     def get_name(self):
         return "test2"
