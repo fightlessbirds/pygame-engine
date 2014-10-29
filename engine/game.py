@@ -33,11 +33,15 @@ class Game():
         finished
     """
 
-    def __init__(self, width, height, fullscreen=False, frame_rate=30,
-                 title="PyGame Window", icon=None):
+    def __init__(self, width, height, **kwargs):
         """Initialize the game module. Creates a display window with the
         specified parameters."""
         print("Initializing game")
+        #parse keyword arguments
+        fullscreen = kwargs["fullscreen"] or False
+        frame_rate = kwargs["frame_rate"] or 30
+        title = kwargs["title"] or "PyGame Window"
+        icon = kwargs["icon"] or None
         #initialize pygame and the game screen
         pygame.init()
         self.frame_rate = frame_rate
