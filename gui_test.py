@@ -17,7 +17,7 @@ class GuiTestScene(Scene):
 		text_button.rect.center = (200, 200)
 		self.buttons.add(text_button)
 		
-		image = self.parent.load_image("test_resources/smile.bmp")
+		image = engine.loader.load_image("test_resources/smile.bmp")
 		image_button = ImageButton(image)
 		def func_2():
 			print("clicked image button")

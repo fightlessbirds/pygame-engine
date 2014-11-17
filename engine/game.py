@@ -31,13 +31,24 @@ class Game():
         current_scene
         next_scene
         finished
+    
+    Properties:
+        icon
     """
 
-    def __init__(self, width, height, fullscreen=False, frame_rate=30,
-                 title="PyGame Window", icon=None):
+    def __init__(self, width, height, **kwargs):
         """Initialize the game module. Creates a display window with the
-        specified parameters."""
+        specified parameters.
+        kwargs:  fullscreen = True|False
+                 frame_rate = 123
+                 title = "window title"
+        """
         print("Initializing game")
+        #parse keyword arguments
+        fullscreen = kwargs.get("fullscreen", False)
+        frame_rate = kwargs.get("frame_rate", 30)
+        title = kwargs.get("title", "PyGame Window")
+        icon = kwargs.get("icon", None)
         #initialize pygame and the game screen
         pygame.init()
         self.frame_rate = frame_rate
@@ -49,10 +60,10 @@ class Game():
         #set the screen area rect
         self.screen_rect = pygame.Rect(0, 0, width, height)
         #set the window caption
-        pygame.display.set_caption(title)
+        self.title = title
         #set the window icon
         if icon != None:
-            pygame.display.set_icon(icon)
+            self.icon = icon
         #set the background colour
         self.background = 0, 0, 0
         #create the dictionary to store scenes.
@@ -145,14 +156,23 @@ class Game():
 
     def get_height(self):
         return self.screen_rect.height
-
-    def load_image(self, file_name):
-        """Load an image. Magenta is used as a color key."""
-        file_path = os.path.join(file_name)
-        image = pygame.image.load(file_path)
-        conv_image = image.convert()
-        conv_image.set_colorkey(pygame.Color(255, 0, 255))
-        return conv_image
+    
+    @property
+    def title(self):
+        return pygame.display.get_caption()[0]
+    
+    @title.setter
+    def title(self, string):
+        pygame.display.set_caption(string)
+    
+    @property
+    def icon(self):
+        return self.window_icon
+    
+    @icon.setter
+    def icon(self, image):
+        self.window_icon = image
+        pygame.display.set_icon(image)
 
 
 class Scene:
