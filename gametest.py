@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import pygame
 import engine
 from engine.game import Game

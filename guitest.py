@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import pygame
 from pygame import Color
 from engine.game import Game, Scene
