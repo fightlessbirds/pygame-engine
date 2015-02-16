@@ -15,22 +15,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-
 import pygame
 from pygame.sprite import Group, Sprite
 from pygame.font import Font
 from pygame.locals import *
 
-
 class ButtonGroup(Group):
-    def update(self, *args):
-        mouse_event = pygame.event.get(MOUSEBUTTONDOWN)
-        if mouse_event:
-            mouse_pos = pygame.mouse.get_pos()
-            mouse_x = mouse_pos[0]
-            mouse_y = mouse_pos[1]
-            Group.update(self, mouse_x, mouse_y)
-
+    def update(self, mouse):
+        if mouse.button_hit(1):
+            Group.update(self, mouse.x, mouse.y)
 
 class Button(Sprite):
     def __init__(self):

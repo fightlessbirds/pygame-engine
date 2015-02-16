@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import pygame
+from pygame.locals import *
 import engine
 from engine.game import Game
 from engine.game import Scene
@@ -11,7 +12,7 @@ class TestScene1(Scene):
     
     def on_init(self):
         self.test_image = draw_test_image(1)
-        self.smile_image = engine.loader.load_image("test_resources/smile.bmp")
+        self.smile_image = engine.loader.load_image("smile.bmp")
     
     def get_name(self):
         return "test1"
@@ -20,10 +21,9 @@ class TestScene1(Scene):
         pass
     
     def on_update(self, delta, events):
-        for event in events:
-            if (event.type == pygame.KEYDOWN and event.key == pygame.K_2):
-                self.parent.set_next_scene("test2")
-                self.finished = True
+        if self.parent.keyboard.key_hit(K_2):
+            self.parent.set_next_scene("test2")
+            self.finished = True
     
     def on_render(self, screen):
         screen.fill(pygame.Color(155, 155, 155))
@@ -41,7 +41,7 @@ class TestScene2(Scene):
     
     def on_init(self):
         self.test_image = draw_test_image(2)
-        self.smile_image = engine.loader.load_image("test_resources/smile.bmp")
+        self.smile_image = engine.loader.load_image("smile.bmp")
     
     def get_name(self):
         return "test2"
@@ -50,10 +50,9 @@ class TestScene2(Scene):
         pass
     
     def on_update(self, delta, events):
-        for event in events:
-            if (event.type == pygame.KEYDOWN and event.key == pygame.K_1):
-                self.parent.set_next_scene("test1")
-                self.finished = True
+        if self.parent.keyboard.key_hit(K_1):
+            self.parent.set_next_scene("test1")
+            self.finished = True
     
     def on_render(self, screen):
         test_image_w = self.test_image.get_width()

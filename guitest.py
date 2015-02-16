@@ -4,6 +4,7 @@ import pygame
 from pygame import Color
 from engine.game import Game, Scene
 from engine.gui import ButtonGroup, TextButton, ImageButton
+from engine.loader import load_image
 
 
 class GuiTestScene(Scene):
@@ -19,7 +20,7 @@ class GuiTestScene(Scene):
 		text_button.rect.center = (200, 200)
 		self.buttons.add(text_button)
 		
-		image = engine.loader.load_image("test_resources/smile.bmp")
+		image = load_image("smile.bmp")
 		image_button = ImageButton(image)
 		def func_2():
 			print("clicked image button")
@@ -28,7 +29,7 @@ class GuiTestScene(Scene):
 		self.buttons.add(image_button)
 	
 	def on_update(self, delta, events):
-		self.buttons.update()
+		self.buttons.update(self.parent.mouse)
 	
 	def on_render(self, screen):
 		self.buttons.draw(screen)
