@@ -21,7 +21,7 @@ class InputAdapterTest(Scene):
         
     def on_update(self, delta, events):
         # keyboard
-        self.keys_pressed.update(self.parent.keyboard.keystrokes)
+        self.keys_pressed.update(self.parent.keyboard)
         # mouse
         pos = self.parent.mouse.pos
         self.pos_sprite.update(pos)
@@ -39,12 +39,8 @@ class InputAdapterTest(Scene):
             Sprite.__init__(self)
             self.rect = Rect(50, 150, 0, 0)
         
-        def update(self, keystrokes):
-            key_string = ""
-            for key in keystrokes:
-                key_string += "{} {} {} ".format(key.value, key.ascii,
-                                                 key.name)
-            self.image = default_font.render(key_string, False,
+        def update(self, keyboard):
+            self.image = default_font.render(str(keyboard), False,
                                              (255, 255, 255))
 
     class MousePos(Sprite):

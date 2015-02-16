@@ -7,14 +7,21 @@ class KeyboardAdapter(object):
         self._key_state = {}
         self._old_key_state = {}
         self._keystrokes = []
+        self._string = ""
+    
+    def __str__(self):
+        return self._string
         
     def update(self, keyboard_evts):
         self._keystrokes = []
+        self._string = ""
         self._old_key_state = copy(self._key_state)
         for evt in keyboard_evts:
             if evt.type == KEYDOWN:
                 self._key_state[evt.key] = True
-                self._keystrokes.append(Keystroke(evt.key))
+                keystroke = Keystroke(evt.key)
+                self._keystrokes.append(keystroke)
+                self._string += keystroke.ascii
             if evt.type == KEYUP:
                 self._key_state[evt.key] = False
     
