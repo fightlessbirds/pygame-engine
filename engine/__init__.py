@@ -1,4 +1,5 @@
 import event
+import inputadapter
 import game
 import gui
 import loader
