@@ -68,7 +68,7 @@ class Game(object):
         self._frame_rate = frame_rate
         if fullscreen:
             self._screen = pygame.display.set_mode((width, height),
-                    FULLSCREEN, HWSURFACE)
+                    FULLSCREEN | HWSURFACE)
         else:
             self._screen = pygame.display.set_mode((width, height),
                     HWSURFACE)
