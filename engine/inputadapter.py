@@ -91,7 +91,16 @@ class MouseAdapter(object):
     
     @property
     def clicks(self):
+        """Returns a list of Click objects."""
         return copy(self._clicks)
+    
+    @property
+    def click(self):
+        """Returns the most recent click or None if no clicks occurred."""
+        num_clicks = len(self._clicks)
+        if num_clicks > 0:
+            return self._clicks[num_clicks-1]
+        return None
 
 class Keystroke(object):
     def __init__(self, value):

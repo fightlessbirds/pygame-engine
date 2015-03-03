@@ -10,90 +10,88 @@ Refactored by Jason Gosen 2015
 
 import math
 
+def OUT_EXPO(t, b, c, d):
+    return b+c if (t==d) else c * (-2**(-10 * t/d) + 1) + b;
+
+def LINEAR(t, b, c, d):
+    return c*t/d + b
+
+def IN_QUAD(t, b, c, d):
+    t/=d
+    return c*(t)*t + b
+
+def OUT_QUAD(t, b, c, d):
+    t/=d
+    return -c *(t)*(t-2) + b
+
+def IN_OUT_QUAD(t, b, c, d):
+    t/=d/2
+    if ((t) < 1): return c/2*t*t + b
+    t-=1
+    return -c/2 * ((t)*(t-2) - 1) + b
+
+def OUT_IN_QUAD(t, b, c, d): # crashes
+    if (t < d/2):
+        return OUT_QUAD (t*2, b, c/2, d)
+    return IN_QUAD((t*2)-d, b+c/2, c/2)
+
+def IN_CUBIC(t, b, c, d):
+    t/=d
+    return c*(t)*t*t + b
+
+def OUT_CUBIC(t, b, c, d):
+    t=t/d-1
+    return c*((t)*t*t + 1) + b
+
+def IN_OUT_CUBIC(t, b, c, d):
+    t/=d/2
+    if ((t) < 1):
+        return c/2*t*t*t + b
+    t-=2
+    return c/2*((t)*t*t + 2) + b
+
+def OUT_IN_CUBIC(t, b, c, d):
+    if (t < d/2): return OUT_CUBIC (t*2, b, c/2, d)
+    return IN_CUBIC((t*2)-d, b+c/2, c/2, d)
+
+def IN_QUART(t, b, c, d):
+    t/=d
+    return c*(t)*t*t*t + b
+
+def OUT_QUART(t, b, c, d):
+    t=t/d-1
+    return -c * ((t)*t*t*t - 1) + b
+
+def IN_OUT_QUART(t, b, c, d):
+    t/=d/2
+    if (t < 1):
+        return c/2*t*t*t*t + b
+    t-=2
+    return -c/2 * ((t)*t*t*t - 2) + b
+
+def OUT_ELASTIC(t, b, c, d):
+    if (t==0):
+        return b
+    t/=d
+    if t==1:
+        return b+c
+    p = period = d*.3
+    a = amplitude = 1.0
+    if a < abs(c):
+        a = c
+        s = p/4
+    else:
+        s = p/(2*math.pi) * math.asin (c/a)
+    return (a*math.pow(2,-10*t) * math.sin( (t*d-s)*(2*math.pi)/p ) + c + b)
+
 class Tweener(object):
     def __init__(self):
         """Tweener
         This class manages all active tweens, and provides a factory for
         creating and spawning tween motions."""
         self.current_tweens = []
-        self.default_tween_type = self.IN_OUT_QUAD
+        self.default_tween_type = IN_OUT_QUAD
         self.default_duration = 1.0
-
-    def OUT_EXPO(self, t, b, c, d):
-        return b+c if (t==d) else c * (-2**(-10 * t/d) + 1) + b;
-
-    def LINEAR (self, t, b, c, d):
-        return c*t/d + b
-
-    def IN_QUAD (self, t, b, c, d):
-        t/=d
-        return c*(t)*t + b
-
-    def OUT_QUAD (self, t, b, c, d):
-        t/=d
-        return -c *(t)*(t-2) + b
-
-    def IN_OUT_QUAD(self, t, b, c, d):
-        t/=d/2
-        if ((t) < 1): return c/2*t*t + b
-        t-=1
-        return -c/2 * ((t)*(t-2) - 1) + b
-
-    def OUT_IN_QUAD(self, t, b, c, d):
-        if (t < d/2):
-            return self.OUT_QUAD (t*2, b, c/2, d)
-        return self.IN_QUAD((t*2)-d, b+c/2, c/2)
-
-    def IN_CUBIC(self, t, b, c, d):
-        t/=d
-        return c*(t)*t*t + b
-
-    def OUT_CUBIC(self, t, b, c, d):
-        t=t/d-1
-        return c*((t)*t*t + 1) + b
-
-    def IN_OUT_CUBIC(self, t, b, c, d):
-        t/=d/2
-        if ((t) < 1):
-            return c/2*t*t*t + b
-        t-=2
-        return c/2*((t)*t*t + 2) + b
-
-    def OUT_IN_CUBIC(self, t, b, c, d):
-        if (t < d/2): return self.OUT_CUBIC (t*2, b, c/2, d)
-        return self.IN_CUBIC((t*2)-d, b+c/2, c/2, d)
-
-    def IN_QUART(self, t, b, c, d):
-        t/=d
-        return c*(t)*t*t*t + b
-
-    def OUT_QUART(self, t, b, c, d):
-        t=t/d-1
-        return -c * ((t)*t*t*t - 1) + b
-
-    def IN_OUT_QUART(self, t, b, c, d):
-        t/=d/2
-        if (t < 1):
-            return c/2*t*t*t*t + b
-        t-=2
-        return -c/2 * ((t)*t*t*t - 2) + b
-
-    def OUT_ELASTIC(self, t, b, c, d): # Not working :(
-        if (t==0):
-            return b
-        t/=d
-        if t==1:
-            return b+c
-        p = period = d*.3
-        a = amplitude = 1.0
-        if a < abs(c):
-            a = c
-            s = p/4
-        else:
-            s = p/(2*math.pi) * math.asin (c/a)
-
-        return (a*math.pow(2,-10*t) * math.sin( (t*d-s)*(2*math.pi)/p ) + c + b)
-
 
     def has_tweens(self):
         return len(self.current_tweens) > 0
@@ -149,6 +147,11 @@ class Tweener(object):
     def remove_tween(self, tween_obj):
         if self.current_tweens.contains(tween_obj):
             tween_obj.complete = True
+    
+    def remove_all_tweens(self):
+        self.current_tweens = []
+#        for tween in self.current_tweens:
+#            tween.complete = True
 
     def get_tweens_affecting_object(self, obj):
         """Get a list of all tweens acting on the specified object
@@ -218,7 +221,7 @@ class Tween(object):
                 func_name = k
             if func:
                 try:
-                    get_func = getattr(self.target, func_name.replace("set", "get"))
+                    get_func = getattr(self.target, func_name.replace("set_", "get_"))
                     start_val = get_func()
                 except:
                     start_val = change * 0
@@ -232,7 +235,7 @@ class Tween(object):
 
     def pause(self, num_seconds=-1):
         """Pause this tween
-        do tween.pause( 2 ) to pause for a specific time
+        do tween.pause(2) to pause for a specific time
         or tween.pause() which pauses indefinitely."""
         self.paused = True
         self.delay = num_seconds
@@ -282,7 +285,7 @@ class Tween(object):
         # the rocket needs to escape!! - we're already moving, but must go faster!
         twn = tweener.get_tweens_affecting_object(my_rocket)[0]
         tweenable = twn.get_tweenable("thruster_power")
-        tweener.add_tween(tweenable, change=1000.0, tween_time=0.4, tween_type=tweener.IN_QUAD )
+        tweener.add_tween(tweenable, change=1000.0, tween_time=0.4, tween_type=tweener.IN_QUAD)
         """
         ret = None
         for n, f, t in self.t_funcs:
@@ -307,43 +310,3 @@ class Tweenable(object):
         these are normally only created by Tweens."""
         self.start_value = start
         self.change = change
-
-if __name__=="__main__":
-    class TweenTestObject(object):
-        def __init__(self):
-            self.pos = 20
-            self.rot = 50
-
-        def update(self):
-            print(self.pos, self.rot)
-
-        def set_rotation(self, rot):
-            self.rot = rot
-
-        def get_rotation(self):
-            return self.rot
-
-        def complete(self):
-            print("I'm done!")
-    
-    import time
-    
-    t = Tweener()
-    tst = TweenTestObject()
-    mt = t.add_tween(tst, set_rotation=500.0, tween_time=2.5, tween_type=t.OUT_EXPO,
-            pos=-200, delay=0.4, complete_func=tst.complete, update_func=tst.update)
-    s = time.clock()
-    changed = False
-    while t.has_tweens():
-        tm = time.clock()
-        d = tm - s
-        s = tm
-        t.update(d)
-        if mt.delta > 1.0 and not changed:
-            tweenable = mt.get_tweenable("set_rotation")
-            t.add_tween(tweenable, change=-1000, tween_time=0.7)
-            t.add_tween(mt, duration=-0.2, tween_time=0.2)
-            changed = True
-        print tst.get_rotation(), tst.pos
-        time.sleep(0.06)
-    print tst.get_rotation(), tst.pos
