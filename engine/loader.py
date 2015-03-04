@@ -1,18 +1,8 @@
-"""
-The loader module contains functions for loading resource files into
-the game. Resources are cached so subsequent loading is almost
-instantaneous.
-"""
-
-
 import os
 import pygame
 
-
-#global resource cache
 images = {}
 sounds = {}
-
 
 def load(file_name):
     file_ext = file_name.split(".")[-1]
@@ -21,13 +11,11 @@ def load(file_name):
     elif file_ext == "ogg":
         return load_sound(file_name)
 
-
 def load_image(file_name):
     """Load an image. Magenta is used as a color key."""
     cached_image = images.get(file_name, None)
     if cached_image:
         return cached_image
-    
     file_path = os.path.join("res/img/" + file_name)
     image = pygame.image.load(file_path)
     conv_image = image.convert()
@@ -36,12 +24,10 @@ def load_image(file_name):
     images[file_name] = conv_image
     return conv_image
 
-
 def load_sound(file_name):
     cached_sound = sounds.get(file_name, None)
     if cached_sound:
         return cached_sound
-    
     file_path = os.path.join("res/snd/" + file_name)
     sound = pygame.mixer.Sound(file_path)
     #cache the sound
