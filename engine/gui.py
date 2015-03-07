@@ -18,7 +18,6 @@ class Button(Sprite):
             self.on_click()
     
     def is_clicked(self, mouse_x, mouse_y):
-        """Returns True/False if the button had been clicked"""
         if (mouse_x >= self.rect.left
                 and mouse_x <= self.rect.right
                 and mouse_y >= self.rect.top
@@ -27,9 +26,7 @@ class Button(Sprite):
         return False
     
     def on_click(self):
-        """Called when the button had been clicked on."""
         pass
-
 
 class TextButton(Button):
     def __init__(self, text, font_size, color=Color("white")):
@@ -38,7 +35,6 @@ class TextButton(Button):
         self.font_color = color
         self.image = self.font.render(text, True, self.font_color)
         self.rect = Rect(0, 0, self.image.get_width(), self.image.get_height())
-
 
 class ImageButton(Button):
     def __init__(self, image):

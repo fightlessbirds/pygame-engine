@@ -11,10 +11,10 @@ class Game(object):
         pygame.init()
         if fullscreen:
             self._screen = pygame.display.set_mode((width, height),
-                    FULLSCREEN | HWSURFACE)
+                                                   FULLSCREEN | HWSURFACE)
         else:
             self._screen = pygame.display.set_mode((width, height),
-                    HWSURFACE)
+                                                   HWSURFACE)
         self._screen_rect = pygame.Rect(0, 0, width, height)
         self.window_title = kwargs.get("title", "PyGame Window")
         self.background_color = 0, 0, 0
@@ -51,22 +51,21 @@ class Game(object):
             raise Exception("cannot start game, there are no scenes")
         else:
             while self._finished is False:
-		    self.current_scene = self._load_scene(self._next_scene)
-		    current_scene_name = self.current_scene.name
-		    print("Initializing scene: {}".format(current_scene_name))
-		    self.current_scene.on_init()
-		    print("Beginning game loop")
-		    clock = pygame.time.Clock()
-		    while self.current_scene.finished is False: # main loop
-		        delta = clock.tick(self._frame_rate)
-		        events = self._process_events()
-		        self.current_scene.on_update(delta, events)
-		        pygame.draw.rect(self._screen, self.background_color,
-		                self._screen_rect)
-		        self.current_scene.on_render(self._screen)
-		        pygame.display.flip()
-		    print("Cleaning up scene: {}".format(current_scene_name))
-		    self.current_scene.on_cleanup()
+                self.current_scene = self._load_scene(self._next_scene)
+                current_scene_name = self.current_scene.name
+                print("Initializing scene: {}".format(current_scene_name))
+                self.current_scene.on_init()
+                print("Beginning game loop")
+                clock = pygame.time.Clock()
+                while self.current_scene.finished is False: # main loop
+                    delta = clock.tick(self._frame_rate)
+                    events = self._process_events()
+                    self.current_scene.on_update(delta, events)
+                    self._screen.fill(self.background_color)
+                    self.current_scene.on_render(self._screen)
+                    pygame.display.flip()
+                print("Cleaning up scene: {}".format(current_scene_name))
+                self.current_scene.on_cleanup()
         pygame.quit()
     
     def _process_events(self):

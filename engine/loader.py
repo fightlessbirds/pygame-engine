@@ -12,7 +12,6 @@ def load(file_name):
         return load_sound(file_name)
 
 def load_image(file_name):
-    """Load an image. Magenta is used as a color key."""
     cached_image = images.get(file_name, None)
     if cached_image:
         return cached_image

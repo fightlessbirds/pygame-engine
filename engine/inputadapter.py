@@ -35,8 +35,6 @@ class KeyboardAdapter(object):
     
     @property
     def keystrokes(self):
-        """Returns a list of keys that were pressed, in the order
-        they were pressed since the last call to update()."""
         return copy(self._keystrokes)
 
 class MouseAdapter(object):
@@ -91,12 +89,10 @@ class MouseAdapter(object):
     
     @property
     def clicks(self):
-        """Returns a list of Click objects."""
         return copy(self._clicks)
     
     @property
     def click(self):
-        """Returns the most recent click or None if no clicks occurred."""
         num_clicks = len(self._clicks)
         if num_clicks > 0:
             return self._clicks[num_clicks-1]
