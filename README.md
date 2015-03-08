@@ -117,7 +117,44 @@ Update all TimedEvent objects belonging to this system.
 > **delta** _IntType_ - The amount of milliseconds that have elapsed since the last update.
 
 ##gui Module
-The gui module still needs to be refactored before documentation is written.
+The gui module contains some classes for creating GUI elements that the player can click on.
+###ButtonGroup class
+A sprite group that manages and updates Button objects. Inherits from the PyGame Group class.
+####Functions
+#####update(mouse)
+Update the button group, checking if any of the buttons have been clicked.
+> **mouse** _MouseAdapter_ - The MouseAdapter object to check for clicks.
+
+###Button class
+Base class for buttons. Instances are aggregated by the ButtonGroup class.
+####Functions
+#####update(mouse\_x, mouse_y)
+Inherited from the PyGame Sprite class. Called by the parent ButtonGroup.
+> **mouse_x** _IntType_ - Mouse position on the x-axis.
+
+> **mouse_y** _IntType_ - Mouse position on the y-axis.
+
+#####on_click()
+Called when the button is clicked. Override this to create a callback function for the button.
+
+###TextButton class
+A button that appears as text.
+####Functions
+#####\_\_init\_\_(text, font_size, color=(255, 255, 255))
+TextButton class constructor.
+> **text** _StringType_ - The text to be displayed on the button.
+
+> **font_size** _IntType_ - The font size used to render the text.
+
+> **color** (_IntType_) - A tuple of three integers ranging 0-255. The colour for the text.
+
+###ImageButton class
+A button that appears as an image.
+####Functions
+#####\_\_init\_\_(image)
+ImageButton class constructor. Create a new button that appears as an image.
+> **image** _Surface_ - The image to be displayed on the button. A PyGame Surface object.
+
 ##inputadapter Module
 This module contains classes that make it easy to get input from the player. The input adapter classes are composed by the Game class.
 ###KeyboardAdapter class
@@ -164,12 +201,19 @@ String representation of the KeyboardAdapter object.
 Helper class for getting input from the mouse.
 ####Properties
 #####pos
+A tuple of integers for the location of the mouse on the x and y-axis. Read-only.
 #####x
+The location of the mouse on the x-axis. Read-only.
 #####y
+The location of the mouse on the y-axis. Read-only.
 #####dx
+Change in position on the x-axis. Read-only.
 #####dy
+Change in position of the y-axis. Read-only.
 #####clicks
+A list of Click objects that were spawned since the last update. Read-only.
 #####click
+The most recent Click object that was spawned since the last update. Read-only.
 ####Functions
 #####update(mouse_evts)
 Update the state of the mouse adapter. This function should be called once ever iteration of the main game loop.
@@ -189,8 +233,25 @@ Integer number for the button being pressed. Read-only.
 ####Functions
 #####\_\_init\_\_(pos, button)
 Click class contructor.
-> **pos** _(IntType, IntType)_ - A tuple containing the x and y location where the mouse was clicked.
+> **pos** _(IntType)_ - A tuple containing the x and y location where the mouse was clicked.
 
 > **button** _IntType_ - PyGame button code for the button that was pressed.
 
 ##loader Module
+The loader module contains functions for loading game resources. Resources are cached to save memory and time for when they are loaded again later.
+####Functions
+#####load(file_name)
+Load a resource. The type of resource is determined automatically by the file extention.
+> **return** _Surface/Sound_ - The loaded resource.
+
+#####load_image(file_name)
+Load an image file from the "res/img" directory. Compatible image types are jpg, png, and bmp. Magenta (255,0,255) is used as the transparent colour key.
+> **file_name** _StringType_ - The name of the image file to load.
+
+> **return** _Surface_ - The loaded image resource.
+
+#####load_sound(file_name)
+Load a sound file from the "res/snd" directory. Only ogg files are compatible.
+> **file_name** _StringType_ - The name of the sound file to load.
+
+> **return** _Sound_ - The loaded sound resource.
