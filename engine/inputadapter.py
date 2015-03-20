@@ -1,6 +1,5 @@
 import pygame
 from pygame.locals import *
-from copy import copy
 
 class KeyboardAdapter(object):
     def __init__(self):
@@ -15,7 +14,7 @@ class KeyboardAdapter(object):
     def update(self, keyboard_evts):
         self._keystrokes = []
         self._string = ""
-        self._old_key_state = copy(self._key_state)
+        self._old_key_state = self._key_state.copy()
         for evt in keyboard_evts:
             if evt.type == KEYDOWN:
                 self._key_state[evt.key] = True
@@ -35,7 +34,7 @@ class KeyboardAdapter(object):
     
     @property
     def keystrokes(self):
-        return copy(self._keystrokes)
+        return list(self._keystrokes)
 
 class MouseAdapter(object):
     def __init__(self):
@@ -48,7 +47,7 @@ class MouseAdapter(object):
     def update(self, mouse_evts):
         self._old_pos = self._pos
         self._clicks = []
-        self._old_button_state = copy(self._button_state)
+        self._old_button_state = self._button_state.copy()
         for evt in mouse_evts:
             if evt.type == MOUSEMOTION:
                 self._pos = evt.pos
@@ -89,7 +88,7 @@ class MouseAdapter(object):
     
     @property
     def clicks(self):
-        return copy(self._clicks)
+        return list(self._clicks)
     
     @property
     def click(self):
