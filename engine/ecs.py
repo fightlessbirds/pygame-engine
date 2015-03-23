@@ -41,23 +41,37 @@ def install(component):
         _components[c_name] = component
         _relationships[c_name] = []
 
-def get_component(name):
+def create_component(name):
     component = _components.get(name, None)
     if component == None:
         return None
     else:
-        return component
+        return component()
 
 def destroy_all():
     for entity in _entities:
         entity.destroy()
 
 def query(components):
-    return
-    l_components = components.split(", ")
-    l_entities = []
-#    for component in l_components:
-        
+    c_names = components.split(", ")
+    c_count = len(c_names)
+    if c_count == 0:
+        return None
+    elif c_count == 1:
+        return _relationships[c_names[0]]
+    else:
+        e_lists = []
+        for c_name in c_names:
+            e_lists.append(_relationships[c_name])
+        l_list = e_lists[1]
+        r_list = []
+        i = 0
+        while i < c_count - 1:
+            r_list = e_lists[i + 1]
+            new_list = [e for e in l_list if e in r_list]
+            l_list = new_list
+            i += 1
+        return l_list
 
 class Entity(object):
     def __init__(self, components=None):
@@ -67,25 +81,36 @@ class Entity(object):
         if not components == None:
             c_names = components.split(", ")
             for c_name in c_names:
-                component = get_component(c_name)
-                self.add(component())
+                self.add(c_name)
     
     def destroy(self):
         for component in self._components:
             _relationships[component].remove(self)
         _entities.remove(self)
 
-    def add(self, component):
-        c_name = component.name
+    def add(self, c_name):
         self._components.append(c_name)
         a_name = "c_{}".format(c_name.lower())
+        component = create_component(c_name)
         setattr(self, a_name, component)
         _relationships[c_name].append(self)
         getattr(self, a_name).add_notify(self)
+    
+    def remove(self, c_name):
+        self._components.remove(c_name)
+        a_name = "c_{}".format(c_name.lower())
+        delattr(self, a_name)
+        _relationships[c_name].remove(self)
         
     @property
     def components(self):
         return list(self._components)
+    
+    def has_component(self, c_name):
+        a_name = "c_{}".format(c_name.lower())
+        if hasattr(self, a_name):
+            return True
+        return False
         
     def bind(self, event, callback):
         callbacks = self._bindings.get(event, None)
