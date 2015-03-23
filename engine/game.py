@@ -2,6 +2,7 @@ from copy import copy
 import pygame
 from pygame.locals import *
 from inputadapter import KeyboardAdapter, MouseAdapter
+import ecs
 
 class Game(object):
     def __init__(self, width, height, **kwargs):
@@ -61,8 +62,10 @@ class Game(object):
                     delta = clock.tick(self._frame_rate)
                     events = self._process_events()
                     self.current_scene.on_update(delta, events)
+                    ecs.trigger("Update", delta)
                     self._screen.fill(self.background_color)
                     self.current_scene.on_render(self._screen)
+                    ecs.trigger("Render", self._screen)
                     pygame.display.flip()
                 print("Cleaning up scene: {}".format(current_scene_name))
                 self.current_scene.on_cleanup()
