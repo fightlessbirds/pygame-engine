@@ -82,6 +82,7 @@ class Entity(object):
             c_names = components.split(", ")
             for c_name in c_names:
                 self.add(c_name)
+        self.active = True
     
     def destroy(self):
         for component in self._components:
@@ -129,15 +130,16 @@ class Entity(object):
             pass # callback is not in callbacks
 
     def trigger(self, event, *args):
-        callbacks = self._bindings.get(event, None)
-        if callbacks == None:
-            return
-        for callback in callbacks:
-            print("triggering callback")
-            if args:
-                callback(*args)
-            else:
-                callback()
+        if self.active:
+            callbacks = self._bindings.get(event, None)
+            if callbacks == None:
+                return
+            for callback in callbacks:
+                print("triggering callback")
+                if args:
+                    callback(*args)
+                else:
+                    callback()
 
 class Component(object):
     name = "Unnamed"
