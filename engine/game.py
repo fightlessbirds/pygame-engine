@@ -6,6 +6,7 @@ import ecs
 
 class Game(object):
     def __init__(self, width, height, **kwargs):
+        global instance
         print("Initializing game")
         fullscreen = kwargs.get("fullscreen", False)
         self._frame_rate = kwargs.get("frame_rate", 30)
@@ -25,6 +26,7 @@ class Game(object):
         self._current_scene = None
         self._next_scene = None
         self._finished = False
+        instance = self
         print("Game is ready for scenes")
 
     def add_scene(self, scene):

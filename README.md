@@ -27,6 +27,9 @@ Engine code is licensed under the GPL v3. The tweening module is licensed under 
 ##Documentation
 ##game Module
 The game module contains classes that encapsulate a PyGame application. A Game object is instantiated and then subclasses of Scene are added to it.
+####Attributes
+#####instance
+The most recently created Game object.
 ###Game Class
 The game class is at the heart of the engine. It contains the core game update loop. Scenes classes are aggregated by a Game object and instantiated on-the-fly. Game is composed of objects of the KeyboardAdapter and MouseAdapter classes.
 ####Attributes
@@ -255,3 +258,6 @@ Load a sound file from the "res/snd" directory. Only ogg files are compatible.
 > **file_name** _StringType_ - The name of the sound file to load.
 
 > **return** _Sound_ - The loaded sound resource.
+
+##ecs Module
+TODO
