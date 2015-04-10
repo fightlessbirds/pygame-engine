@@ -47,15 +47,15 @@ An instance of the MouseAdapter class. Read-only.
 ####Functions
 #####\_\_init\_\_(width, height, **kwargs)
 Game class contructor. Initializes PyGame and prepares a Game object that will accept Scene subclasses.
-> **width** _IntType_ - Width of the screen in pixels.
+> **width** _int_ - Width of the screen in pixels.
 
-> **height** _IntType_ - Height of the screen in pixels.
+> **height** _int_ - Height of the screen in pixels.
 
-> **fullscreen** _BooleanType_ - Whether the game should be in fullscreen mode.
+> **fullscreen** _bool_ - Whether the game should be in fullscreen mode.
 
-> **frame_rate** _IntType_ - The maximum frame rate that the game will run at.
+> **frame_rate** _int_ - The maximum frame rate that the game will run at.
 
-> **title** _StringType_ - The title of the game displayed by the window manager.
+> **title** _str_ - The title of the game displayed by the window manager.
 
 #####add_scene(scene)
 Add a Scene subclass to the Game object.
@@ -63,17 +63,17 @@ Add a Scene subclass to the Game object.
 
 #####set_next_scene(name)
 Set the scene that is to be loaded after the current scene is finished. Raises an exception if the scene cannot be found.
-> **name** _StringType_ - The name of the Scene to be loaded. Must be the same as Scene.name.
+> **name** _str_ - The name of the Scene to be loaded. Must be the same as Scene.name.
 
 #####start()
 Start the game engine. At least one Scene subclass must be added or an exception is raised. If the next scene has not been explicitly set then the first scene that was added is loaded by default.
 #####stop()
 Stop the game engine. Sets the current Scene object as finished. Sets the Game object as finished.
 #####get_width()
-> **return** _IntType_ - The width of the game window.
+> **return** _int_ - The width of the game window.
 
 #####get_height()
-> **return** _IntType_ - The height of the game window.
+> **return** _int_ - The height of the game window.
 
 ###Scene Class
 The Scene class encapsulates a scene in the game. Every scene has four functions that are called by its parent Game object and must be implemented: on_init, on_update, on_render, and on_cleanup.
@@ -89,7 +89,7 @@ Game object that composes the Scene subclass.
 Called before the game enters the update/render loop for this scene.
 #####on_update(delta, events)
 Called once every iteration of the main loop. Game logic lives here.
-> **delta** _IntType_ - Elapsed milliseconds since the last update.
+> **delta** _int_ - Elapsed milliseconds since the last update.
 
 > **events** _[EventType]_ - A list of PyGame user events that occured since the last update.
 
@@ -105,9 +105,9 @@ This class manages one-shot timed events. Events can be created with a delay and
 ####Functions
 #####add(delay, func)
 Add a new TimedEvent to the system.
-> **delay** _IntType_ - The amount of milliseconds that must pass until the timer runs out.
+> **delay** _int_ - The amount of milliseconds that must pass until the timer runs out.
 
-> **func** _FunctionType_ - The callback function that will be called when the timer runs out.
+> **func** _function_ - The callback function that will be called when the timer runs out.
 
 > **return** _TimedEvent_ - The newly created event object.
 
@@ -117,7 +117,7 @@ Remove an event from the system before it has a chance to trigger.
 
 #####update(delta)
 Update all TimedEvent objects belonging to this system.
-> **delta** _IntType_ - The amount of milliseconds that have elapsed since the last update.
+> **delta** _int_ - The amount of milliseconds that have elapsed since the last update.
 
 ##gui Module
 The gui module contains some classes for creating GUI elements that the player can click on.
@@ -133,9 +133,9 @@ Base class for buttons. Instances are aggregated by the ButtonGroup class.
 ####Functions
 #####update(mouse\_x, mouse_y)
 Inherited from the PyGame Sprite class. Called by the parent ButtonGroup.
-> **mouse_x** _IntType_ - Mouse position on the x-axis.
+> **mouse_x** _int_ - Mouse position on the x-axis.
 
-> **mouse_y** _IntType_ - Mouse position on the y-axis.
+> **mouse_y** _int_ - Mouse position on the y-axis.
 
 #####on_click()
 Called when the button is clicked. Override this to create a callback function for the button.
@@ -145,11 +145,11 @@ A button that appears as text.
 ####Functions
 #####\_\_init\_\_(text, font_size, color=(255, 255, 255))
 TextButton class constructor.
-> **text** _StringType_ - The text to be displayed on the button.
+> **text** _str_ - The text to be displayed on the button.
 
-> **font_size** _IntType_ - The font size used to render the text.
+> **font_size** _int_ - The font size used to render the text.
 
-> **color** (_IntType_) - A tuple of three integers ranging 0-255. The colour for the text.
+> **color** _(int)_ - A tuple of three integers ranging 0-255. The colour for the text.
 
 ###ImageButton class
 A button that appears as an image.
@@ -172,15 +172,15 @@ Update the state of the keyboard adapter. This function should be called once du
 
 #####key\_down(key_code)
 Check if a key is being held down.
-> **key_code** _IntType_ - The PyGame key code for the key to check.
+> **key_code** _int_ - The PyGame key code for the key to check.
 
-> **return** _BooleanType_ - True/False if the key is being held down.
+> **return** _bool_ - True/False if the key is being held down.
 
 #####key\_hit(key_code)
 Check if a key has just been pressed since the last update.
-> **key_code** _IntType_ - The PyGame key code for the key to check.
+> **key_code** _int_ - The PyGame key code for the key to check.
 
-> **return** _BooleanType_ - True/False if the key was pressed.
+> **return** _bool_ - True/False if the key was pressed.
 
 ###Keystroke class
 This class encapsulates a key being pressed on the keyboard.
@@ -194,11 +194,11 @@ String ascii representation of the key. Ready-only.
 ####Functions
 #####\_\_init\_\_(value)
 Keystroke class constructor.
-> **value** _IntType_ - PyGame key code for which key this Keystroke object should represent.
+> **value** _int_ - PyGame key code for which key this Keystroke object should represent.
 
 ####\_\_str\_\_()
 String representation of the KeyboardAdapter object.
-> **return** _StringType_ - Returns a string built from the keys that were pressed since the last update.
+> **return** _str_ - Returns a string built from the keys that were pressed since the last update.
 
 ###MouseAdapter class
 Helper class for getting input from the mouse.
@@ -236,9 +236,9 @@ Integer number for the button being pressed. Read-only.
 ####Functions
 #####\_\_init\_\_(pos, button)
 Click class contructor.
-> **pos** _(IntType)_ - A tuple containing the x and y location where the mouse was clicked.
+> **pos** _(int)_ - A tuple containing the x and y location where the mouse was clicked.
 
-> **button** _IntType_ - PyGame button code for the button that was pressed.
+> **button** _int_ - PyGame button code for the button that was pressed.
 
 ##loader Module
 The loader module contains functions for loading game resources. Resources are cached to save memory and time for when they are loaded again later.
@@ -249,15 +249,67 @@ Load a resource. The type of resource is determined automatically by the file ex
 
 #####load_image(file_name)
 Load an image file from the "res/img" directory. Compatible image types are jpg, png, and bmp. Magenta (255,0,255) is used as the transparent colour key.
-> **file_name** _StringType_ - The name of the image file to load.
+> **file_name** _str_ - The name of the image file to load.
 
 > **return** _Surface_ - The loaded image resource.
 
 #####load_sound(file_name)
 Load a sound file from the "res/snd" directory. Only ogg files are compatible.
-> **file_name** _StringType_ - The name of the sound file to load.
+> **file_name** _str_ - The name of the sound file to load.
 
 > **return** _Sound_ - The loaded sound resource.
 
 ##ecs Module
-TODO
+The ecs module implements an Entity/Component system. Entities are dynamically built from components at runtime. Event callbacks can be bound and triggered globally or per entity.
+####Functions
+#####bind(event, callback)
+Bind a callback function to an event.
+> **event** _str_ - The event to bind.
+
+> **callback** _function_ - The function to be called when the event is triggered.
+
+#####unbind(event, callback)
+Unbind a callback from an event.
+> **event** _str_ - The event to unbind.
+
+> **callback** _function_ - The callback function to unbind.
+
+#####trigger(event, *args)
+Trigger an event globally.
+> **event** _str_ - The event to trigger.
+
+> **args** - Arguments to pass along to the callback function.
+
+#####install(component)
+Install a Component subclass in the system so it can be added to entities.
+
+> **component** _Component_ - A Component subclass that can be instatiated and added to entities.
+
+#####destroy_all()
+Destroy all entities in the system.
+
+#####query(components)
+Query the system for a list of entities that matches component criteria.
+
+> **components** _str_ - A comma-seperated string of component names. The system will be searched for any entities that contain these components. e.g. "Sprite, Breakable, Collision"
+
+> **return** _[Entity]_ - A list of entities that matched the criteria.
+
+###Entity class
+####Properties
+#####components
+####Functions
+#####\_\_init\_\_(components=None)
+#####destroy()
+#####add(c_name)
+#####remove(c_name)
+#####has_component(c_name)
+#####bind(event, callback)
+#####unbind(event, callback)
+#####trigger(event, *args)
+###Component class
+####Attributes
+#####parent
+####Functions
+#####add_notify(entity)
+#####on_init()

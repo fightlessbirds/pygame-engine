@@ -41,13 +41,6 @@ def install(component):
         _components[c_name] = component
         _relationships[c_name] = []
 
-def create_component(name):
-    component = _components.get(name, None)
-    if component == None:
-        return None
-    else:
-        return component()
-
 def destroy_all():
     for entity in _entities:
         entity.destroy()
@@ -73,6 +66,13 @@ def query(components):
             i += 1
         return l_list
 
+def _create_component(name):
+    component = _components.get(name, None)
+    if component == None:
+        return None
+    else:
+        return component()
+
 class Entity(object):
     def __init__(self, components=None):
         self._bindings = {}
@@ -92,7 +92,7 @@ class Entity(object):
     def add(self, c_name):
         self._components.append(c_name)
         a_name = "c_{}".format(c_name.lower())
-        component = create_component(c_name)
+        component = _create_component(c_name)
         setattr(self, a_name, component)
         _relationships[c_name].append(self)
         getattr(self, a_name).add_notify(self)
