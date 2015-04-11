@@ -31,7 +31,7 @@ The game module contains classes that encapsulate a PyGame application. A Game o
 #####instance
 The most recently created Game object.
 ###Game Class
-The game class is at the heart of the engine. It contains the core game update loop. Scenes classes are aggregated by a Game object and instantiated on-the-fly. Game is composed of objects of the KeyboardAdapter and MouseAdapter classes.
+The game class is at the heart of the engine. It contains the core game update loop. Scene classes are aggregated by a Game object and instantiated on-the-fly. Game composes KeyboardAdapter and MouseAdapter objects.
 ####Attributes
 #####background_color
 A tuple of three integers ranging 0-255. The colour that will be used for clearing the screen at the beginning of each frame.
@@ -76,7 +76,7 @@ Stop the game engine. Sets the current Scene object as finished. Sets the Game o
 > **return** _int_ - The height of the game window.
 
 ###Scene Class
-The Scene class encapsulates a scene in the game. Every scene has four functions that are called by its parent Game object and must be implemented: on_init, on_update, on_render, and on_cleanup.
+The Scene class encapsulates a scene in the game. Every scene has four functions that are called by its parent Game object and must be implemented: on\_init, on\_update, on\_render, and on_cleanup.
 ####Attributes
 #####name
 A string containing the name of the Scene. The name is used to reference the Scene when it is loaded. The default name is "unnamed" but this should be modified to be unique for every Scene subclass.
@@ -100,7 +100,7 @@ Called when it is time to draw the scene to the screen.
 #####on_cleanup()
 Called after the scene has finished but before it is unloaded.
 ##event Module
-###TimedEventSystem class
+###TimedEventSystem Class
 This class manages one-shot timed events. Events can be created with a delay and a callback function for when they are finished.
 ####Functions
 #####add(delay, func)
@@ -121,14 +121,14 @@ Update all TimedEvent objects belonging to this system.
 
 ##gui Module
 The gui module contains some classes for creating GUI elements that the player can click on.
-###ButtonGroup class
+###ButtonGroup Class
 A sprite group that manages and updates Button objects. Inherits from the PyGame Group class.
 ####Functions
 #####update(mouse)
 Update the button group, checking if any of the buttons have been clicked.
 > **mouse** _MouseAdapter_ - The MouseAdapter object to check for clicks.
 
-###Button class
+###Button Class
 Base class for buttons. Instances are aggregated by the ButtonGroup class.
 ####Functions
 #####update(mouse\_x, mouse_y)
@@ -140,7 +140,7 @@ Inherited from the PyGame Sprite class. Called by the parent ButtonGroup.
 #####on_click()
 Called when the button is clicked. Override this to create a callback function for the button.
 
-###TextButton class
+###TextButton Class
 A button that appears as text.
 ####Functions
 #####\_\_init\_\_(text, font_size, color=(255, 255, 255))
@@ -151,7 +151,7 @@ TextButton class constructor.
 
 > **color** _(int)_ - A tuple of three integers ranging 0-255. The colour for the text.
 
-###ImageButton class
+###ImageButton Class
 A button that appears as an image.
 ####Functions
 #####\_\_init\_\_(image)
@@ -160,7 +160,7 @@ ImageButton class constructor. Create a new button that appears as an image.
 
 ##inputadapter Module
 This module contains classes that make it easy to get input from the player. The input adapter classes are composed by the Game class.
-###KeyboardAdapter class
+###KeyboardAdapter Class
 Helper class for getting input from the keyboard.
 ####Properties
 #####keystrokes
@@ -182,7 +182,7 @@ Check if a key has just been pressed since the last update.
 
 > **return** _bool_ - True/False if the key was pressed.
 
-###Keystroke class
+###Keystroke Class
 This class encapsulates a key being pressed on the keyboard.
 ####Properties
 #####value
@@ -200,7 +200,7 @@ Keystroke class constructor.
 String representation of the KeyboardAdapter object.
 > **return** _str_ - Returns a string built from the keys that were pressed since the last update.
 
-###MouseAdapter class
+###MouseAdapter Class
 Helper class for getting input from the mouse.
 ####Properties
 #####pos
@@ -224,7 +224,7 @@ Update the state of the mouse adapter. This function should be called once ever 
 
 #####button\_hit(button_code)
 #####button\_down(button_code)
-###Click class
+###Click Class
 This class encapsulates a button being pressed on the mouse.
 ####Properties
 #####x
@@ -247,13 +247,13 @@ The loader module contains functions for loading game resources. Resources are c
 Load a resource. The type of resource is determined automatically by the file extention.
 > **return** _Surface/Sound_ - The loaded resource.
 
-#####load_image(file_name)
+#####load\_image(file_name)
 Load an image file from the "res/img" directory. Compatible image types are jpg, png, and bmp. Magenta (255,0,255) is used as the transparent colour key.
 > **file_name** _str_ - The name of the image file to load.
 
 > **return** _Surface_ - The loaded image resource.
 
-#####load_sound(file_name)
+#####load\_sound(file_name)
 Load a sound file from the "res/snd" directory. Only ogg files are compatible.
 > **file_name** _str_ - The name of the sound file to load.
 
@@ -281,35 +281,68 @@ Trigger an event globally.
 > **args** - Arguments to pass along to the callback function.
 
 #####install(component)
-Install a Component subclass in the system so it can be added to entities.
-
-> **component** _Component_ - A Component subclass that can be instatiated and added to entities.
+Install a Component subclass in the system so it can later be instantiated and added to entities.
+> **component** _Component_ - A Component subclass.
 
 #####destroy_all()
-Destroy all entities in the system.
-
+Destroy all entities in the system. Data for the entity/component relationships are delted.
 #####query(components)
-Query the system for a list of entities that matches component criteria.
-
+Query the system for a list of entities that match component criteria.
 > **components** _str_ - A comma-seperated string of component names. The system will be searched for any entities that contain these components. e.g. "Sprite, Breakable, Collision"
 
 > **return** _[Entity]_ - A list of entities that matched the criteria.
 
-###Entity class
+###Entity Class
+The Entity class serves to compose game objects from components. Components can be added and removed at runtime. Events can be bound and triggered.
 ####Properties
 #####components
+A list of strings containing the names of each component that has a relationship with this entity. Read-only.
 ####Functions
 #####\_\_init\_\_(components=None)
+Entity class constructor. Optionally takes a comma seperated list of component names that should be added to the entity. e.g. "Enemy, Animate, Collision"
 #####destroy()
+Destroy this entity. Data for the entity's component relationships are deleted.
 #####add(c_name)
+Add a component to this Entity. Components become attributes of the entity they are added to. The component name is used with a prefix of "c\_" for the attribute name. e.g. If a component named "Collision" were added to my\_entity it would look like "my\_entity.c_collision".
+> **c_name** _str_ - The name of the component to add. The component must already be installed in the system.
+
 #####remove(c_name)
-#####has_component(c_name)
+Remove a component from this entity. The Component object is removed from the entity's namespace and relationship data is deleted.
+> **c_name** _str_ - The name of the component to remove.
+
+#####has\_component(c_name)
+Check if this entity already has a relationship with a component.
+> **c_name** _str_ - The name of the component to check.
+
 #####bind(event, callback)
+Bind a callback function to an event for this entity.
+> **event** _str_ - The event to bind.
+
+> **callback** _function_ - The function to call when the event is triggered.
+
 #####unbind(event, callback)
+Unbind a callback function from an event for this entity.
+> **event** _str_ - The event to unbind.
+
+> **callback** _function_ - The callback function to unbind.
+
 #####trigger(event, *args)
-###Component class
-####Attributes
+Trigger an event for this entity.
+> **event** _str_ - The event to trigger for this entity.
+
+> **args** - Arguments to pass along to the callback function.
+
+###Component Class
+Component base class. All subclasses must have an attribute called "name" that they will be handled by.
+####Properties
 #####parent
+The parent Entity object that this Component object belongs to. Read-only.
 ####Functions
 #####add_notify(entity)
+Notify the Component object that it has been added to an entity. Automatically called from Entity.add().
+> **entity** _Entity_ - The parent Entity object.
+
 #####on_init()
+Override this function in Component subclasses to perform any initialization for the component. This function is called from add_notify().
+##tween Module
+TODO

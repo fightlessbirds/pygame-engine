@@ -145,7 +145,11 @@ class Component(object):
     name = "Unnamed"
     
     def add_notify(self, entity):
-        self.parent = entity
+        self._parent = entity
         self.on_init()
 
+    @property
+    def parent(self):
+        return self._parent
+        
     def on_init(self): pass
