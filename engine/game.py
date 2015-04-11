@@ -1,4 +1,3 @@
-from copy import copy
 import pygame
 from pygame.locals import *
 from inputadapter import KeyboardAdapter, MouseAdapter
@@ -114,7 +113,7 @@ class Game(object):
     
     @property
     def screen_rect(self):
-        return copy(self._screen_rect)
+        return Rect(self._screen_rect)
 
 class Scene(object):
     name = "unnamed"
