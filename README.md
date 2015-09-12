@@ -342,6 +342,10 @@ The parent Entity object that this Component object belongs to. Read-only.
 Notify the Component object that it has been added to an entity. Automatically called from Entity.add().
 > **entity** _Entity_ - The parent Entity object.
 
+#####requires(c_names)
+Establish prerequisites for this component. These components will automatically be added to the entity.
+> **c_names** _str_ - A comma seperated list of components that are required by this component.
+
 #####on_init()
 Override this function in Component subclasses to perform any initialization for the component. This function is called from add_notify().
 ##tween Module

@@ -83,7 +83,7 @@ class Entity(object):
             for c_name in c_names:
                 self.add(c_name)
         self.active = True
-    
+
     def destroy(self):
         for component in self._components:
             _relationships[component].remove(self)
@@ -96,23 +96,23 @@ class Entity(object):
         setattr(self, a_name, component)
         _relationships[c_name].append(self)
         getattr(self, a_name).add_notify(self)
-    
+
     def remove(self, c_name):
         self._components.remove(c_name)
         a_name = "c_{}".format(c_name.lower())
         delattr(self, a_name)
         _relationships[c_name].remove(self)
-        
+
     @property
     def components(self):
         return list(self._components)
-    
+
     def has_component(self, c_name):
         a_name = "c_{}".format(c_name.lower())
         if hasattr(self, a_name):
             return True
         return False
-        
+
     def bind(self, event, callback):
         callbacks = self._bindings.get(event, None)
         if callbacks == None:
@@ -143,13 +143,19 @@ class Entity(object):
 
 class Component(object):
     name = "Unnamed"
-    
+
     def add_notify(self, entity):
         self._parent = entity
         self.on_init()
 
+    def requires(self, c_names):
+        c_name_list = c_names.split(", ")
+        for c_name in c_name_list:
+            if not self.parent.has_component(c_name):
+                self.parent.add(c_name)
+
     @property
     def parent(self):
         return self._parent
-        
+
     def on_init(self): pass
