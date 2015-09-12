@@ -1,7 +1,6 @@
 import pygame
 from pygame.locals import *
 from inputadapter import KeyboardAdapter, MouseAdapter
-import ecs
 
 class Game(object):
     def __init__(self, width, height, **kwargs):
@@ -63,15 +62,13 @@ class Game(object):
                     delta = clock.tick(self._frame_rate)
                     events = self._process_events()
                     self.current_scene.on_update(delta, events)
-                    ecs.trigger("Update", delta)
                     self._screen.fill(self.background_color)
                     self.current_scene.on_render(self._screen)
-                    ecs.trigger("Render", self._screen)
                     pygame.display.flip()
                 print("Cleaning up scene: {}".format(current_scene_name))
                 self.current_scene.on_cleanup()
         pygame.quit()
-    
+
     def _process_events(self):
         quit_evt = pygame.event.get(QUIT)
         if quit_evt:
@@ -94,23 +91,23 @@ class Game(object):
 
     def get_height(self):
         return self._screen_rect.height
-    
+
     @property
     def keyboard(self):
         return self._keyboard
-    
+
     @property
     def mouse(self):
         return self._mouse
-    
+
     @property
     def window_title(self):
         return pygame.display.get_caption()[0]
-    
+
     @window_title.setter
     def window_title(self, string):
         pygame.display.set_caption(string)
-    
+
     @property
     def screen_rect(self):
         return Rect(self._screen_rect)
