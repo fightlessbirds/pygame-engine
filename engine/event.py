@@ -1,3 +1,31 @@
+_bindings = {} # {event:[callback]}
+
+def bind(event, callback):
+    callbacks = _bindings.get(event, None)
+    if callbacks == None:
+        _bindings[event] = [callback]
+        return
+    callbacks.append(callback)
+
+def unbind(event, callback):
+    callbacks = _bindings.get(event, None)
+    if callbacks == None:
+        return
+    try:
+        callbacks.remove(callback)
+    except:
+        pass # callback is not in callbacks
+
+def trigger(event, *args):
+    # tigger global bindings
+    callbacks = _bindings.get(event, None)
+    if not callbacks == None:
+        for callback in callbacks:
+            if args:
+                callback(*args)
+            else:
+                callback()
+
 class TimedEventSystem(object):
     def __init__(self):
         self._events = []
@@ -13,7 +41,7 @@ class TimedEventSystem(object):
     def update(self, delta):
         for event in self._events:
             event.update(delta)
-    
+
     class _TimedEvent(object):
         def __init__(self, parent, delay, func):
             self.parent = parent

@@ -100,6 +100,25 @@ Called when it is time to draw the scene to the screen.
 #####on_cleanup()
 Called after the scene has finished but before it is unloaded.
 ##event Module
+####Functions
+#####bind(event, callback)
+Bind a callback function to an event.
+> **event** _str_ - The event to bind.
+
+> **callback** _function_ - The function to be called when the event is triggered. It may or may not have a *args argument.
+
+#####unbind(event, callback)
+Unbind a callback from an event.
+> **event** _str_ - The event to unbind.
+
+> **callback** _function_ - The callback function to unbind.
+
+#####trigger(event, *args)
+Trigger an event globally.
+> **event** _str_ - The event to trigger.
+
+> **args** - Arguments to pass along to the callback function.
+
 ###TimedEventSystem Class
 This class manages one-shot timed events. Events can be created with a delay and a callback function for when they are finished.
 ####Functions
@@ -259,94 +278,5 @@ Load a sound file from the "res/snd" directory. Only ogg files are compatible.
 
 > **return** _Sound_ - The loaded sound resource.
 
-##ecs Module
-The ecs module implements an Entity/Component system. Entities are dynamically built from components at runtime. Event callbacks can be bound and triggered globally or per entity.
-####Functions
-#####bind(event, callback)
-Bind a callback function to an event.
-> **event** _str_ - The event to bind.
-
-> **callback** _function_ - The function to be called when the event is triggered.
-
-#####unbind(event, callback)
-Unbind a callback from an event.
-> **event** _str_ - The event to unbind.
-
-> **callback** _function_ - The callback function to unbind.
-
-#####trigger(event, *args)
-Trigger an event globally.
-> **event** _str_ - The event to trigger.
-
-> **args** - Arguments to pass along to the callback function.
-
-#####install(component)
-Install a Component subclass in the system so it can later be instantiated and added to entities.
-> **component** _Component_ - A Component subclass.
-
-#####destroy_all()
-Destroy all entities in the system. Data for the entity/component relationships are delted.
-#####query(components)
-Query the system for a list of entities that match component criteria.
-> **components** _str_ - A comma-seperated string of component names. The system will be searched for any entities that contain these components. e.g. "Sprite, Breakable, Collision"
-
-> **return** _[Entity]_ - A list of entities that matched the criteria.
-
-###Entity Class
-The Entity class serves to compose game objects from components. Components can be added and removed at runtime. Events can be bound and triggered.
-####Properties
-#####components
-A list of strings containing the names of each component that has a relationship with this entity. Read-only.
-####Functions
-#####\_\_init\_\_(components=None)
-Entity class constructor. Optionally takes a comma seperated list of component names that should be added to the entity. e.g. "Enemy, Animate, Collision"
-#####destroy()
-Destroy this entity. Data for the entity's component relationships are deleted.
-#####add(c_name)
-Add a component to this Entity. Components become attributes of the entity they are added to. The component name is used with a prefix of "c\_" for the attribute name. e.g. If a component named "Collision" were added to my\_entity it would look like "my\_entity.c_collision".
-> **c_name** _str_ - The name of the component to add. The component must already be installed in the system.
-
-#####remove(c_name)
-Remove a component from this entity. The Component object is removed from the entity's namespace and relationship data is deleted.
-> **c_name** _str_ - The name of the component to remove.
-
-#####has\_component(c_name)
-Check if this entity already has a relationship with a component.
-> **c_name** _str_ - The name of the component to check.
-
-#####bind(event, callback)
-Bind a callback function to an event for this entity.
-> **event** _str_ - The event to bind.
-
-> **callback** _function_ - The function to call when the event is triggered.
-
-#####unbind(event, callback)
-Unbind a callback function from an event for this entity.
-> **event** _str_ - The event to unbind.
-
-> **callback** _function_ - The callback function to unbind.
-
-#####trigger(event, *args)
-Trigger an event for this entity.
-> **event** _str_ - The event to trigger for this entity.
-
-> **args** - Arguments to pass along to the callback function.
-
-###Component Class
-Component base class. All subclasses must have an attribute called "name" that they will be handled by.
-####Properties
-#####parent
-The parent Entity object that this Component object belongs to. Read-only.
-####Functions
-#####add_notify(entity)
-Notify the Component object that it has been added to an entity. Automatically called from Entity.add().
-> **entity** _Entity_ - The parent Entity object.
-
-#####requires(c_names)
-Establish prerequisites for this component. These components will automatically be added to the entity.
-> **c_names** _str_ - A comma seperated list of components that are required by this component.
-
-#####on_init()
-Override this function in Component subclasses to perform any initialization for the component. This function is called from add_notify().
 ##tween Module
 TODO
