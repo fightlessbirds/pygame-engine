@@ -9,22 +9,19 @@ from engine.game import Scene
 
 class TestScene1(Scene):
     name = "test1"
-    
+
     def on_init(self):
         self.test_image = draw_test_image(1)
         self.smile_image = engine.loader.load_image("smile.bmp")
-    
-    def get_name(self):
-        return "test1"
-    
+
     def on_cleanup(self):
         pass
-    
+
     def on_update(self, delta, events):
         if self.parent.keyboard.key_hit(K_2):
             self.parent.set_next_scene("test2")
             self.finished = True
-    
+
     def on_render(self, screen):
         screen.fill(pygame.Color(155, 155, 155))
         test_image_w = self.test_image.get_width()
@@ -38,22 +35,22 @@ class TestScene1(Scene):
 
 class TestScene2(Scene):
     name = "test2"
-    
+
     def on_init(self):
         self.test_image = draw_test_image(2)
         self.smile_image = engine.loader.load_image("smile.bmp")
-    
+
     def get_name(self):
         return "test2"
-    
+
     def on_cleanup(self):
         pass
-    
+
     def on_update(self, delta, events):
         if self.parent.keyboard.key_hit(K_1):
             self.parent.set_next_scene("test1")
             self.finished = True
-    
+
     def on_render(self, screen):
         test_image_w = self.test_image.get_width()
         test_image_h = self.test_image.get_height()

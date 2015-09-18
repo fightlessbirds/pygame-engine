@@ -1,3 +1,4 @@
+import animation
 import event
 import inputadapter
 import game
