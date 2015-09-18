@@ -1,17 +1,30 @@
+import pygame
 from pygame.sprite import Sprite
 
 class AnimatedSprite(Sprite):
-    def __init__(self, *groups):
+    def __init__(self, spritemap, rect, *groups):
         Sprite.__init__(self, *groups)
+        self.spritemap = spritemap
+        self.rect = rect
         self.is_animating = False
 
+        rows = spritemap.get_height() / rect.h
+        columns = spritemap.get_width() / rect.w
+        self.num_frames = rows * columns
+
+        self.set_frame(0)
+
+
     def animate(self, frames, fps, loop=False, func=None):
+        """
+        sprite.animate([0,1,2,1], 5, True, some_func)
+        """
         if not self.spritemap:
             raise "Cannot animate if spritemap is not set"
         self.is_animating = True
         self.elapsed_time = 0
+        self.last_frame = 0
         self.frames = frames
-        self.num_frames = len(frames)
         self.fps = fps
         self.loop = loop
         self.callback = func
@@ -19,23 +32,40 @@ class AnimatedSprite(Sprite):
     def update(self, delta):
         if not self.is_animating:
             return
+        next_frame = self.last_frame
         self.elapsed_time = self.elapsed_time + delta
         elapsed_frames = int(self.elapsed_time / (1000 / self.fps))
         if elapsed_frames < self.num_frames:
-            self.set_frame(elapsed_frames)
+            if not self.last_frame == elapsed_frames:
+                next_frame = elapsed_frames
         elif elapsed_frames >= self.num_frames:
             if self.loop:
                 next_frame = elapsed_frames % self.num_frames
-                self.set_frame(next_frame)
             else:
-                self.set_frame(self.num_frames - 1)
+                next_frame = self.num_frames - 1
+                self.set_frame(next_frame)
                 self.is_animating = False
                 func = self.callback
                 if func:
                     func()
+                return
+        if not next_frame == self.last_frame:
+            self.set_frame(next_frame)
+            self.last_frame = next_frame
 
     def set_frame(self, frame_index):
-        # use self.rect.w/h to split spritemap into frames and select the correct frame
-        map_width = self.spritemap.width()
-        map_height = self.spritemap.heigh()
-        columns = int( self.rect.w)
+        print(frame_index)
+        map_width = self.spritemap.get_width()
+        map_height = self.spritemap.get_height()
+        frame_width = self.rect.w
+        frame_height = self.rect.h
+        columns = map_width / frame_width
+        frame_row = frame_index / columns
+        frame_column = frame_index % columns
+        source_x = frame_column * frame_width
+        source_y = frame_row * frame_height
+        source_rect = pygame.Rect(source_x, source_y,
+                                  frame_width, frame_height)
+        print(self.spritemap)
+        print(source_rect)
+        self.image = self.spritemap.subsurface(source_rect)

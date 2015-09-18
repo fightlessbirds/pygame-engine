@@ -7,19 +7,17 @@ from pygame.sprite import Group
 
 import engine
 from engine.game import Game, Scene
-from engine.loader import load
 from engine.animation import AnimatedSprite
 
-class TestScene1(Scene):
+class TestScene(Scene):
     name = "test"
 
     def on_init(self):
         self.test_sprites = Group()
-        spritemap = load("animsprite.png")
 
-        test_sprite = AnimatedSprite(self.test_sprites)
-        test_sprite.spritemap = spritemap
-        test_sprite.rect = Rect(100, 100, 16, 16)
+        spritemap = engine.loader.load("animsprite.png")
+        rect = Rect(100, 100, 16, 16)
+        test_sprite = AnimatedSprite(spritemap, rect, self.test_sprites)
         test_sprite.animate([0,1,2,1], 5, True)
 
     def on_cleanup(self):
