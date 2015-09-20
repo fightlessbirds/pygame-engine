@@ -54,7 +54,6 @@ class AnimatedSprite(Sprite):
             self.last_frame = next_frame
 
     def set_frame(self, frame_index):
-        print(frame_index)
         map_width = self.spritemap.get_width()
         map_height = self.spritemap.get_height()
         frame_width = self.rect.w
@@ -66,6 +65,4 @@ class AnimatedSprite(Sprite):
         source_y = frame_row * frame_height
         source_rect = pygame.Rect(source_x, source_y,
                                   frame_width, frame_height)
-        print(self.spritemap)
-        print(source_rect)
         self.image = self.spritemap.subsurface(source_rect)
