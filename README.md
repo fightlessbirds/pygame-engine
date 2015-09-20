@@ -99,6 +99,29 @@ Called when it is time to draw the scene to the screen.
 
 #####on_cleanup()
 Called after the scene has finished but before it is unloaded.
+##animation Module
+###AnimatedSprite Class
+A Pygame sprite that can be animated. The rect and image attributes from the Sprite class are used in combination with a sprite map and the animate() function.
+####Attributes
+#####spritemap
+A Pygame Surface object that contains the frames the sprite should draw from. All frames must be the same size as the sprite's rect attribute.
+#####is_animating
+A boolean that controls whether the sprite should be animating. This is automatically set to True by the animate() function. Can be used to interrupt an animation in progress.
+####Functions
+#####animate(frames, fps, loop=False, func=None)
+Start animating the sprite. The spritemap and rect atttributes must already be set.
+> **frames** _[int]_ - An array of integers that represent the frames of the animation. Index starts at 0.
+
+> **fps** _int_ - The speed at which to animate in frames per second.
+
+> **loop** _bool_ - Whether or not to loop the animation. If looped the callback function will never be called.
+
+> **func** _function_ - A function to call when the animation finishes. This will only be called if loop is set to false. Setting the is_animate attribute to False will not trigger this callback.
+
+#####set_frame(frame_index)
+Set the current image to a frame from the spritemap. Spritemap and rect attributes must be set.
+> **frame_index** _int_ - The index for the frame to set. Index starts at 0.
+
 ##event Module
 ####Functions
 #####bind(event, callback)
