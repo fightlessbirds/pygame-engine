@@ -108,6 +108,14 @@ A Pygame Surface object that contains the frames the sprite should draw from. Al
 #####is_animating
 A boolean that controls whether the sprite should be animating. This is automatically set to True by the animate() function. Can be used to interrupt an animation in progress.
 ####Functions
+#####\_\_init\_\_(spritemap, rect, *groups)
+AnimatedSprite constructor. Creates a new animated sprite from a spritemap and rect. The first frame is set as the sprite image automatically.
+> **spritemap** _Surface_ - A Pygame Surface object containing the frames for the sprite.
+
+> **rect** _Rect_ - Pygame rect object that stores the frame size.
+
+> **groups** _Group_ - One or more Pygame sprite groups that the sprite should be added to.
+
 #####animate(frames, fps, loop=False, func=None)
 Start animating the sprite. The spritemap and rect atttributes must already be set.
 > **frames** _[int]_ - An array of integers that represent the frames of the animation. Index starts at 0.
