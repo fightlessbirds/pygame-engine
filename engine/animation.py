@@ -10,7 +10,6 @@ class AnimatedSprite(Sprite):
 
         rows = spritemap.get_height() / rect.h
         columns = spritemap.get_width() / rect.w
-        self.num_frames = rows * columns
 
         self.set_frame(0)
 
@@ -33,24 +32,25 @@ class AnimatedSprite(Sprite):
         if not self.is_animating:
             return
         next_frame = self.last_frame
+        num_frames = len(self.frames)
         self.elapsed_time = self.elapsed_time + delta
         elapsed_frames = int(self.elapsed_time / (1000 / self.fps))
-        if elapsed_frames < self.num_frames:
+        if elapsed_frames < num_frames:
             if not self.last_frame == elapsed_frames:
                 next_frame = elapsed_frames
-        elif elapsed_frames >= self.num_frames:
+        elif elapsed_frames >= num_frames:
             if self.loop:
-                next_frame = elapsed_frames % self.num_frames
+                next_frame = elapsed_frames % num_frames
             else:
-                next_frame = self.num_frames - 1
-                self.set_frame(next_frame)
+                next_frame = num_frames - 1
+                self.set_frame(self.frames[next_frame])
                 self.is_animating = False
                 func = self.callback
                 if func:
                     func()
                 return
         if not next_frame == self.last_frame:
-            self.set_frame(next_frame)
+            self.set_frame(self.frames[next_frame])
             self.last_frame = next_frame
 
     def set_frame(self, frame_index):
