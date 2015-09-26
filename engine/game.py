@@ -52,21 +52,21 @@ class Game(object):
             raise Exception("cannot start game, there are no scenes")
         else:
             while self._finished is False:
-                self.current_scene = self._load_scene(self._next_scene)
-                current_scene_name = self.current_scene.name
+                self._current_scene = self._load_scene(self._next_scene)
+                current_scene_name = self._current_scene.name
                 print("Initializing scene: {}".format(current_scene_name))
-                self.current_scene.on_init()
+                self._current_scene.on_init()
                 print("Beginning game loop")
                 clock = pygame.time.Clock()
-                while self.current_scene.finished is False: # main loop
+                while self._current_scene.finished is False: # main loop
                     delta = clock.tick(self._frame_rate)
                     events = self._process_events()
-                    self.current_scene.on_update(delta, events)
+                    self._current_scene.on_update(delta, events)
                     self._screen.fill(self.background_color)
-                    self.current_scene.on_render(self._screen)
+                    self._current_scene.on_render(self._screen)
                     pygame.display.flip()
                 print("Cleaning up scene: {}".format(current_scene_name))
-                self.current_scene.on_cleanup()
+                self._current_scene.on_cleanup()
         pygame.quit()
 
     def _process_events(self):
@@ -83,7 +83,7 @@ class Game(object):
         return usr_evts
 
     def stop(self):
-        self.current_scene.finished = True
+        self._current_scene.finished = True
         self._finished = True
 
     def get_width(self):
