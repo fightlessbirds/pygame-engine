@@ -132,7 +132,7 @@ class Tweener(object):
 
         t_complete_func = kwargs.pop("complete_func") if "complete_func" in kwargs \
                 else None
-        
+
         t_update_func = kwargs.pop("update_func") if "update_func" in kwargs \
                 else None
 
@@ -147,7 +147,7 @@ class Tweener(object):
     def remove_tween(self, tween_obj):
         if self.current_tweens.contains(tween_obj):
             tween_obj.complete = True
-    
+
     def remove_all_tweens(self):
         self.current_tweens = []
 #        for tween in self.current_tweens:
@@ -169,7 +169,9 @@ class Tweener(object):
             if t.target is obj:
                 t.complete = True
 
-    def update(self, time_since_last_frame):
+    def update(self, delta):
+        # Convert from milliseconds to seconds
+        time_since_last_frame = float(delta) / 1000.0
         for t in self.current_tweens:
             if not t.complete:
                 t.update(time_since_last_frame)

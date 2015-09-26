@@ -10,16 +10,16 @@ from engine.loader import load
 
 class TestScene(Scene):
     name = "tweentest"
-    
+
     def on_init(self):
         self.sprites = Group()
         self.smile_sprite = TestSprite()
         self.sprites.add(self.smile_sprite)
         self.tweener = Tweener()
-    
+
     def on_cleanup(self):
         pass
-    
+
     def on_update(self, delta, events):
         click = self.parent.mouse.click
         if click:
@@ -31,8 +31,8 @@ class TestScene(Scene):
                     tween_type=IN_OUT_QUAD)
             self.tweener.add_tween(self.smile_sprite, set_y=dy,
                     tween_type=IN_OUT_QUAD)
-        self.tweener.update(float(delta) / 1000.0)
-    
+        self.tweener.update(delta)
+
     def on_render(self, screen):
         self.sprites.draw(screen)
 
@@ -41,16 +41,16 @@ class TestSprite(Sprite):
         Sprite.__init__(self)
         self.image = load("smile.bmp")
         self.rect = Rect(0, 0, 64, 64)
-    
+
     def get_x(self):
         return self.rect.centerx
-    
+
     def set_x(self, x):
         self.rect.centerx = x
-    
+
     def get_y(self):
         return self.rect.centery
-    
+
     def set_y(self, y):
         self.rect.centery = y
 
