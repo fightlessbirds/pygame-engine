@@ -58,11 +58,11 @@ class AnimatedSprite(Sprite):
         map_height = self.spritemap.get_height()
         frame_width = self.rect.w
         frame_height = self.rect.h
-        columns = map_width / frame_width
-        frame_row = frame_index / columns
+        columns = int(map_width / frame_width)
+        frame_row = int(frame_index / columns)
         frame_column = frame_index % columns
-        source_x = frame_column * frame_width
-        source_y = frame_row * frame_height
+        source_x = int(frame_column * frame_width)
+        source_y = int(frame_row * frame_height)
         source_rect = pygame.Rect(source_x, source_y,
                                   frame_width, frame_height)
         self.image = self.spritemap.subsurface(source_rect)
