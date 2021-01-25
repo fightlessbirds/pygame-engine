@@ -1,7 +1,7 @@
-import animation
-import event
-import inputadapter
-import game
-import gui
-import loader
-import tween
+import engine.animation
+import engine.event
+import engine.inputadapter
+import engine.game
+import engine.gui
+import engine.loader
+import engine.tween

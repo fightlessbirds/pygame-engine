@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from inputadapter import KeyboardAdapter, MouseAdapter
+from engine.inputadapter import KeyboardAdapter, MouseAdapter
 
 class Game(object):
     def __init__(self, width, height, **kwargs):

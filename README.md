@@ -1,6 +1,6 @@
 PyGame Engine
 =============
-A simple game engine for use with PyGame. Written for Python 2.7 and PyGame version 1.9.1.
+A simple game engine for use with PyGame. Written for Python 3.9 and PyGame version 2.0.1.
 ##License
 Engine code is licensed under the GPL v3. The tweening module is licensed under the MIT license.
 ##Example
